@@ -28,9 +28,10 @@ class DetectorFactory(object):
     '''
     seed = None
 
-    def __init__(self):
+    def __init__(self, lang_enabled=None):
         self.word_lang_prob_map = {}
         self.langlist = []
+        self.profiles_enabled = lang_enabled
 
     def load_profile(self, profile_directory):
         list_files = os.listdir(profile_directory)
@@ -40,6 +41,8 @@ class DetectorFactory(object):
         langsize, index = len(list_files), 0
         for filename in list_files:
             if filename.startswith('.'):
+                continue
+            if self.profiles_enabled and filename not in self.profiles_enabled:
                 continue
             filename = path.join(profile_directory, filename)
             if not path.isfile(filename):
